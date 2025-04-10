@@ -14,18 +14,26 @@ from aliyunsdkcore.acs_exception.exceptions import ClientException
 from aliyunsdkcore.acs_exception.exceptions import ServerException
 from aliyunsdkdysmsapi.request.v20170525.SendSmsRequest import SendSmsRequest
 from rest_framework.permissions import IsAdminUser
-
+from django.conf import settings
 
 # 这里需要替换为你自己的阿里云短信服务配置
 ACCESS_KEY_ID = 'your_access_key_id'
 ACCESS_KEY_SECRET = 'your_access_key_secret'
 SIGN_NAME = 'your_sign_name'
 TEMPLATE_CODE = 'your_template_code'
-# 从环境变量中获取配置信息
-APPID = os.getenv('WECHAT_APPID')
-APPSECRET = os.getenv('WECHAT_APPSECRET')
+
+APPID = settings.WECHAT_APPID
+APPSECRET = settings.WECHAT_APPSECRET
 redis_client = redis.Redis(host='localhost', port=6379, db=0)
 
+class WechatConfigView(APIView):
+    def get(self, request):
+        config = {
+            'APPID': settings.WECHAT_APPID,
+            'REDIRECT_URI': settings.WECHAT_REDIRECT_URI,
+            'SCOPE': 'snsapi_userinfo'
+        }
+        return Response(config, status=status.HTTP_200_OK)
 
 # 管理员删除用户信息
 class UserDeleteView(APIView):
