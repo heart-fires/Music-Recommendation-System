@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -133,11 +134,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # 支付宝配置
 ALIPAY_APPID = 'your_app_id'
-ALIPAY_PRIVATE_KEY = open('D:/python/DjangoVueLearning/Virtual/backend/private_key.pem').read()
-ALIPAY_PUBLIC_KEY = open('D:/python/DjangoVueLearning/Virtual/backend/public_key.pem').read()
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ALIPAY_PRIVATE_KEY = open(os.path.join(BASE_DIR, 'private_key.pem')).read()
+ALIPAY_PUBLIC_KEY = open(os.path.join(BASE_DIR, 'public_key.pem')).read()
 ALIPAY_NOTIFY_URL = 'your_notify_url'
 ALIPAY_RETURN_URL = 'your_return_url'
 
 CRONJOBS = [
     ('0 0 * * *', 'music_app.tasks.update_music_library')  # 每天凌晨执行一次
 ]
+
+# 微信开放平台配置
+WECHAT_APPID = 'your_appid'
+WECHAT_APPSECRET = 'your_appsecret'
+WECHAT_REDIRECT_URI = 'http://yourdomain.com/wechat/callback'
